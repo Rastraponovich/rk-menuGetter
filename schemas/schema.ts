@@ -93,7 +93,7 @@ export const GetCategList = (rest?: string) => {
     } else {
         return `<?xml version="1.0" encoding="windows-1251"?>
         <RK7Query>
-            <RK7Command2 CMD="GetRefData" RefName="CATEGLIST"  WithMacroProp="1"  WithChildItems="3">
+            <RK7Command2 CMD="GetRefData" RefName="CATEGLIST"  WithMacroProp="1"  WithChildItems="3" OnlyActive="1">
                 <PROPFILTERS>
                     <PROPFILTER Name="genRestName" Value="Сибас"/>    
                     </PROPFILTERS>

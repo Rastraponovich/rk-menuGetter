@@ -8,9 +8,8 @@ const agent = new Agent({
     rejectUnauthorized: false,
 })
 
-const URL =
-    process.env.URL || "https://10.20.31.2:86/rk7api/v0/xmlinterface.xml"
-
+const URL = "https://10.20.30.2:86/rk7api/v0/xmlinterface.xml"
+//process.env.URL ||
 const cred: ICred = {
     username: `${process.env.LOGIN}` || "Wilde",
     password: `${process.env.PASS}` || "1024",

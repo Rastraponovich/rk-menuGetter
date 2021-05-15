@@ -23,7 +23,7 @@ export interface ICategListItems {
 export interface ICategListItem {
     Code: number
     GUIDString: string
-    Ident: 1000051
+    Ident: number
     CategPath: string
     MainParentIdent: number
     Name: string

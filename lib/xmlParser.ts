@@ -23,6 +23,5 @@ const options = {
 
 export const xmlParser = (data: any) => {
     const obj = parse(data, options)
-
     return obj
 }

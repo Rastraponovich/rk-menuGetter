@@ -8,3 +8,18 @@ export interface IErrorResponse {
     statusText: string
     data: any
 }
+
+export interface IParsingTreeResult {
+    Name: string
+    Ident: number
+    Type: string
+    childs?: IParsingTreeResult[]
+    dishes?: IDish[]
+}
+export interface IDish {
+    Name: string
+    Ident: number
+    Type: string
+    CategPath: string
+    Price: number
+}
