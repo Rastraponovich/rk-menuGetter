@@ -1,5 +1,6 @@
 import React, { FC } from "react"
 import Head from "next/head"
+import Header from "../Header/Header"
 
 interface InputLayoutProps {
     title?: string
@@ -16,8 +17,8 @@ const Layout: FC<InputLayoutProps> = ({ title, children }) => {
                     content="initial-scale=1.0, width=device-width"
                 />
             </Head>
-            <header></header>
-            <main>{children}</main>
+            <Header title={title} />
+            <main className="container">{children}</main>
             <footer></footer>
         </>
     )

@@ -1,59 +1,23 @@
-import axios from "axios"
-import React, { ReactEventHandler, SyntheticEvent, useState } from "react"
-import { pasringTree } from "@/lib/parsingTree"
+import React, { useState } from "react"
+import Link from "next/link"
+import { restConf } from "@/restconf/restconf"
+import { IRestaurant } from "@/types/common"
 
-import { IParsingTreeResult } from "@/types/common"
-import { IRIChildItems, IRK7QueryResult } from "@/types/rk7"
-import { ICategListItem, IRK7CategListResult } from "@/types/rk7CategList"
-import { IMenuItem, IMenuItems } from "@/types/rk7Menuitems"
 import Layout from "@/components/Layout/Layout"
-import TreeItems from "@/components/TreeItems/TreeItems"
+import RestaurantList from "@/components/RestaurantList/RestaurantList"
 
 const Home = () => {
-    const [tree, setTree] = useState<IParsingTreeResult[]>([])
-    const [rest, setRest] = useState("")
-    const [loading, setLoading] = useState(false)
-
-    const handleChange = (event: any) => {
-        const { id, value } = event.target
-
-        setRest(value)
-    }
-
-    const getCategList = async () => {
-        const url = `/api/refdata?name=CATEGLIST&wmp=1&childs=true&genRestName=Сибас`
-        const response = await axios.get(url)
-        if (response.data) {
-            const result: ICategListItem =
-                response.data.RK7QueryResult.CommandResult.RK7Reference.Items
-                    .Item
-        }
-    }
-
-    const getCategList2 = async () => {
-        setLoading(true)
-        const url = `/api/categlist`
-        const response = await axios.get(url)
-        if (response.data) {
-            const result: IParsingTreeResult[] = pasringTree(response.data)
-            console.log(result)
-            setTree(result)
-            setLoading(false)
-        }
-    }
+    const [restaurants, setRestaurants] = useState<IRestaurant[]>(
+        restConf.restaurants
+    )
 
     return (
         <Layout title="Главная">
             <h2>hello</h2>
-            <div>
-                <input type="text" value={rest} onChange={handleChange} />
-                <button onClick={() => alert(rest)}>show data</button>
-            </div>
-            <button onClick={getCategList}>категории</button>
-            <button onClick={getCategList2}>getCategList2</button>
-            <span>{loading ? "Загрузка" : null}</span>
 
-            <TreeItems arr={tree} />
+            <RestaurantList restaurants={restaurants} />
+
+            <Link href="/getmenu">Меню</Link>
         </Layout>
     )
 }

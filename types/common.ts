@@ -23,3 +23,11 @@ export interface IDish {
     CategPath: string
     Price: number
 }
+
+export interface IRestaurant {
+    address: string
+    port: number
+    name: string
+    genRestName: string
+    id: number
+}

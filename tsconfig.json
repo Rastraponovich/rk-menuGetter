@@ -9,7 +9,8 @@
             "@/styles/*": ["styles/*"],
             "@/hooks/*": ["hooks/*"],
             "@/types/*": ["types/*"],
-            "@/schemas/*": ["schemas/*"]
+            "@/schemas/*": ["schemas/*"],
+            "@/restconf/*": ["restconf/*"]
         },
         "allowJs": true,
         "skipLibCheck": true,

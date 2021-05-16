@@ -33,3 +33,7 @@ export const getData = async (schema: string, url?: string): Promise<any> => {
         return { status, statusText, data }
     }
 }
+
+export const makeUrl = (address: string, port: number): string => {
+    return `https://${address}:${port}/rk7api/v0/xmlinterface.xml`
+}

@@ -9,7 +9,7 @@ const TreeItems: FC<InputProps> = ({ arr }) => {
         <>
             {arr.length > 0
                 ? arr.map((item) => (
-                      <TreeItem key={item.Ident} treeItem={item} />
+                      <TreeItem key={item.Ident + item.Name} treeItem={item} />
                   ))
                 : null}
         </>
