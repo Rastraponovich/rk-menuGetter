@@ -4,7 +4,6 @@ import { ICategListItem } from "@/types/rk7CategList"
 import { IMenuItem } from "@/types/rk7Menuitems"
 
 export const pasringTree = (value: any): IParsingTreeResult[] => {
-    console.log(value)
     const result: IRIChildItems =
         value.RK7QueryResult.CommandResult.RK7Reference.RIChildItems
     if (Array.isArray(result.TCategListItem)) {

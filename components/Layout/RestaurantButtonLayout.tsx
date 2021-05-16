@@ -1,5 +1,5 @@
 import { Button, Paper } from "@material-ui/core"
-import React, { FC } from "react"
+import React, { FC, memo } from "react"
 
 interface InputProps {
     checkConnection?: () => void
@@ -12,6 +12,7 @@ const RestaurantButtonLayout: FC<InputProps> = ({
     getMenu,
     exportMenu,
 }) => {
+    console.log("Update")
     return (
         <Paper
             sx={{ my: 1, p: 2, ["& > *:not(:last-child)"]: { mr: 1 } }}
@@ -48,4 +49,4 @@ const RestaurantButtonLayout: FC<InputProps> = ({
     )
 }
 
-export default RestaurantButtonLayout
+export default memo(RestaurantButtonLayout)

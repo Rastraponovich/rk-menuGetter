@@ -28,6 +28,7 @@ export const getData = async (schema: string, url?: string): Promise<any> => {
     } catch (error) {
         const err: AxiosError = error
         const { status, statusText, data } = err.response
+        console.log(err)
 
         console.log(err.response)
         return { status, statusText, data }

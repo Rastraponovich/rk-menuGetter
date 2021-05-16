@@ -1,18 +1,21 @@
-import React, { FC, useEffect, useState } from "react"
+import React, { useCallback, useEffect, useMemo, useState } from "react"
+import { NextPage } from "next"
+
 import { useRouter } from "next/router"
+import axios, { AxiosResponse } from "axios"
+import { makeUrl } from "@/lib/getData"
+import { pasringTree } from "@/lib/parsingTree"
 
 import { IParsingTreeResult, IRestaurant } from "@/types/common"
 import { restConf } from "@/restconf/restconf"
+import { IRK7QueryResult } from "@/types/rk7"
 import styles from "@/styles/Restaurant.module.css"
 
 import Layout from "@/components/Layout/Layout"
 import { Button, Divider, Paper, Typography } from "@material-ui/core"
-import { pasringTree } from "@/lib/parsingTree"
-import axios, { AxiosResponse } from "axios"
 import RestaurantButtonLayout from "@/components/Layout/RestaurantButtonLayout"
-import { makeUrl } from "@/lib/getData"
-import { IRK7QueryResult } from "@/types/rk7"
-import { useTimer } from "@/hooks/useTimer"
+import LoadingLayout from "@/components/Layout/LoadingLayout"
+import TreeItems from "@/components/TreeItems/TreeItems"
 
 interface InputProps {}
 
@@ -24,18 +27,16 @@ const bulk: IRestaurant = {
     id: 0,
 }
 
-const Restaurant: FC<InputProps> = (props) => {
+const Restaurant: NextPage<InputProps> = (props) => {
     const router = useRouter()
 
     const [loading, setLoading] = useState<boolean>(false)
     const [tree, setTree] = useState<IParsingTreeResult[]>([])
     const [status, setStatus] = useState<string>("")
     const [restaurant, setRestaurant] = useState<IRestaurant>(bulk)
-    const [timer, setTimer] = useState(10)
 
-    // const timerF = useTimer(120, setTimer, 1000)
+    const memoTree = useMemo(() => tree, [tree])
 
-    // console.log(timer)
     useEffect(() => {
         const result = restConf.restaurants.find(
             (item) => item.id.toString() === router.query.id
@@ -55,6 +56,7 @@ const Restaurant: FC<InputProps> = (props) => {
             "/api/status",
             { url }
         )
+        console.log(request.data)
         if (request.data?.Status) {
             setStatus(request.data.Status)
         } else {
@@ -67,14 +69,21 @@ const Restaurant: FC<InputProps> = (props) => {
         const url = `/api/categlist`
         const response = await axios.get(url)
         if (response.data) {
-            const result: IParsingTreeResult[] = pasringTree(response.data)
-            console.log(result)
-            setTree(result)
+            setTree(pasringTree(response.data))
             setLoading(false)
         }
     }
 
-    const hanldeExportMenu = () => {}
+    const checkConnect = useCallback(() => {
+        handleCheckConnection()
+    }, [status])
+
+    const getMenu = useCallback(() => {
+        handleGetMenu()
+    }, [status])
+
+    const exportMenu = useCallback(() => {}, [status])
+
     const handleBack = () => {
         router.back()
     }
@@ -93,15 +102,14 @@ const Restaurant: FC<InputProps> = (props) => {
                         Статус Сервера: {status === "Ok" ? "Ок" : "Нет связи"}
                     </Typography>
                     <RestaurantButtonLayout
-                        checkConnection={handleCheckConnection}
-                        getMenu={handleGetMenu}
-                        exportMenu={hanldeExportMenu}
+                        checkConnection={checkConnect}
+                        getMenu={getMenu}
+                        exportMenu={exportMenu}
                     />
                 </Paper>
 
-                {loading ? (
-                    <Typography>Подождите идет загрузка</Typography>
-                ) : null}
+                <LoadingLayout loading={loading} />
+                <TreeItems arr={memoTree} />
 
                 <div style={{ flexGrow: 1 }}></div>
                 <Button

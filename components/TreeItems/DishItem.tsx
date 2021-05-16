@@ -1,22 +1,24 @@
-import React, { FC } from "react"
+import React, { FC, memo } from "react"
 import { IDish } from "@/types/common"
+import { ListItem, ListItemText } from "@material-ui/core"
 
 interface InputPorps {
     dish: IDish
     idx?: number
 }
 const DishItem: FC<InputPorps> = ({ dish, idx }) => {
+    const handleClick = () => {
+        const message = `${dish.Name} : ${dish.Price}`
+
+        console.log(message)
+    }
     return (
-        <div
-            style={{
-                display: "flex",
-                flexDirection: "column",
-                margin: "0 0 0 1.5rem",
-            }}
-        >
-            {idx + 1}. {dish.Name} : {dish.Price / 100}
-        </div>
+        <ListItem button divider dense onClick={handleClick}>
+            <ListItemText
+                primary={`${idx + 1}. ${dish.Name} : ${dish.Price / 100}`}
+            />
+        </ListItem>
     )
 }
 
-export default DishItem
+export default memo(DishItem)
