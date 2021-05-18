@@ -12,12 +12,8 @@ const RestaurantButtonLayout: FC<InputProps> = ({
     getMenu,
     exportMenu,
 }) => {
-    console.log("Update")
     return (
-        <Paper
-            sx={{ my: 1, p: 2, ["& > *:not(:last-child)"]: { mr: 1 } }}
-            elevation={4}
-        >
+        <div className="button__group">
             <Button
                 size="small"
                 variant="contained"
@@ -45,7 +41,7 @@ const RestaurantButtonLayout: FC<InputProps> = ({
             >
                 Сохранить в файл
             </Button>
-        </Paper>
+        </div>
     )
 }
 

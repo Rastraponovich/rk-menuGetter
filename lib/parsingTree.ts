@@ -13,7 +13,7 @@ export const pasringTree = (value: any): IParsingTreeResult[] => {
 
         return output
     } else {
-        const output = [{ ...parsingDirectory(result.TCategListItem) }]
+        const output = parsingDirectory(result.TCategListItem).childs
         console.log(output, "obj")
 
         return output

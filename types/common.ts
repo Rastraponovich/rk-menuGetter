@@ -1,12 +1,21 @@
+import { IRK7QueryResult } from "./rk7"
+
 export interface ICred {
     username: string
     password: string
 }
 
+export interface IResult {
+    RK7QueryResult?: IRK7QueryResult
+    isAxiosError?: boolean
+    code?: string
+    message?: string
+}
+
 export interface IErrorResponse {
-    status: number
-    statusText: string
-    data: any
+    isAxiosError?: boolean
+    code?: string
+    message?: string
 }
 
 export interface IParsingTreeResult {

@@ -1,6 +1,6 @@
 import axios, { AxiosError } from "axios"
 import { Agent } from "https"
-import { ICred } from "@/types/common"
+import { ICred, IErrorResponse, IResult } from "@/types/common"
 import { xmlParser } from "./xmlParser"
 
 const agent = new Agent({
@@ -15,9 +15,12 @@ const cred: ICred = {
     password: `${process.env.PASS}` || "1024",
 }
 
-export const getData = async (schema: string, url?: string): Promise<any> => {
+export const getData = async (
+    schema: string,
+    url?: string
+): Promise<IResult> => {
     try {
-        const result = await axios.post(url || URL, schema, {
+        const result = await axios.post(url, schema, {
             headers: {
                 "Content-Type": "xml/text",
             },
@@ -26,12 +29,8 @@ export const getData = async (schema: string, url?: string): Promise<any> => {
         })
         return xmlParser(result.data)
     } catch (error) {
-        const err: AxiosError = error
-        const { status, statusText, data } = err.response
-        console.log(err)
-
-        console.log(err.response)
-        return { status, statusText, data }
+        const { code, isAxiosError, message }: AxiosError = error
+        return { code, isAxiosError, message }
     }
 }
 

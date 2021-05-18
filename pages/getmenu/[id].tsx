@@ -1,66 +1,63 @@
-import React, { useCallback, useEffect, useMemo, useState } from "react"
-import { NextPage } from "next"
+import React, { useCallback, useMemo, useState } from "react"
+import { GetServerSideProps, NextPage } from "next"
 
 import { useRouter } from "next/router"
 import axios, { AxiosResponse } from "axios"
 import { makeUrl } from "@/lib/getData"
 import { pasringTree } from "@/lib/parsingTree"
 
-import { IParsingTreeResult, IRestaurant } from "@/types/common"
+import { IParsingTreeResult, IRestaurant, IResult } from "@/types/common"
 import { restConf } from "@/restconf/restconf"
-import { IRK7QueryResult } from "@/types/rk7"
 import styles from "@/styles/Restaurant.module.css"
 
 import Layout from "@/components/Layout/Layout"
-import { Button, Divider, Paper, Typography } from "@material-ui/core"
+import {
+    Button,
+    Checkbox,
+    Divider,
+    FormControlLabel,
+    Grid,
+    Paper,
+    Typography,
+} from "@material-ui/core"
 import RestaurantButtonLayout from "@/components/Layout/RestaurantButtonLayout"
 import LoadingLayout from "@/components/Layout/LoadingLayout"
-import TreeItems from "@/components/TreeItems/TreeItems"
+import MenuView from "@/components/MenuView/MenuView"
 
-interface InputProps {}
-
-const bulk: IRestaurant = {
-    name: "",
-    address: "",
-    port: 0,
-    genRestName: "",
-    id: 0,
+interface InputProps {
+    restaurant: IRestaurant
+    connectionState: IResult
+    menu: any
 }
 
-const Restaurant: NextPage<InputProps> = (props) => {
+const Restaurant: NextPage<InputProps> = ({
+    connectionState,
+    restaurant,
+    menu,
+}) => {
     const router = useRouter()
 
     const [loading, setLoading] = useState<boolean>(false)
-    const [tree, setTree] = useState<IParsingTreeResult[]>([])
-    const [status, setStatus] = useState<string>("")
-    const [restaurant, setRestaurant] = useState<IRestaurant>(bulk)
+    const [show, setShow] = useState(false)
+
+    const [tree, setTree] = useState<IParsingTreeResult[]>(menu)
+    const [status, setStatus] = useState<string>(
+        connectionState.RK7QueryResult.Status
+    )
 
     const memoTree = useMemo(() => tree, [tree])
 
-    useEffect(() => {
-        const result = restConf.restaurants.find(
-            (item) => item.id.toString() === router.query.id
-        )
-        setRestaurant({ ...restaurant, ...result })
-    }, [router.query.id])
-
-    useEffect(() => {
-        if (restaurant.address.length > 0) {
-            handleCheckConnection()
-        }
-    }, [router.query.id])
-
     const handleCheckConnection = async () => {
         const url: string = makeUrl(restaurant.address, restaurant.port)
-        const request: AxiosResponse<IRK7QueryResult> = await axios.post(
+        const request: AxiosResponse<IResult> = await axios.post(
             "/api/status",
             { url }
         )
-        console.log(request.data)
-        if (request.data?.Status) {
-            setStatus(request.data.Status)
+
+        if (request.data?.RK7QueryResult.Status) {
+            setStatus(request.data.RK7QueryResult.Status)
         } else {
-            setStatus("")
+            setStatus(request.data.message)
         }
     }
 
@@ -68,6 +65,7 @@ const Restaurant: NextPage<InputProps> = (props) => {
         setLoading(true)
         const url = `/api/categlist`
         const response = await axios.get(url)
+
         if (response.data) {
             setTree(pasringTree(response.data))
             setLoading(false)
@@ -88,28 +86,41 @@ const Restaurant: NextPage<InputProps> = (props) => {
         router.back()
     }
     return (
-        <Layout>
+        <Layout title={`Ресторан : ${restaurant.name}`}>
             <section className={styles.block}>
                 <Typography variant="h3">
                     Ресторан: {restaurant.name}
                 </Typography>
-
-                <Divider />
-                <Paper sx={{ mb: 1, p: 2 }}>
-                    <Typography>Адрес сервера: {restaurant.address}</Typography>
-                    <Typography>Порт: {restaurant.port}</Typography>
-                    <Typography variant="caption">
-                        Статус Сервера: {status === "Ok" ? "Ок" : "Нет связи"}
-                    </Typography>
-                    <RestaurantButtonLayout
-                        checkConnection={checkConnect}
-                        getMenu={getMenu}
-                        exportMenu={exportMenu}
-                    />
-                </Paper>
+                <Grid container spacing={2}>
+                    <Grid item xs={6}>
+                        <Typography>
+                            Адрес сервера: {restaurant.address}
+                        </Typography>
+                        <Typography>Порт: {restaurant.port}</Typography>
+                        <Typography>Статус Сервера: {status}</Typography>
+                        <Divider />
+                        <FormControlLabel
+                            control={
+                                <Checkbox
+                                    checked={show}
+                                    onChange={() => setShow(!show)}
+                                />
+                            }
+                            label="Показать меню"
+                        />
+                    </Grid>
+                    <Grid item container xs={6}>
+                        <RestaurantButtonLayout
+                            checkConnection={checkConnect}
+                            getMenu={getMenu}
+                            exportMenu={exportMenu}
+                        />
+                    </Grid>
+                </Grid>
 
                 <LoadingLayout loading={loading} />
-                <TreeItems arr={memoTree} />
+                <Divider />
+                {show ? <MenuView items={memoTree} /> : null}
 
                 <div style={{ flexGrow: 1 }}></div>
                 <Button
@@ -126,3 +137,37 @@ const Restaurant: NextPage<InputProps> = (props) => {
 }
 
 export default Restaurant
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+    const restaurant: IRestaurant = restConf.restaurants.find(
+        (item) => item.id.toString() === context.query.id
+    )
+    const url = makeUrl(restaurant.address, restaurant.port)
+
+    const getMenu = async (params?: any) => {
+        const endpoint = `http://localhost:3000/api/categlist`
+        const response = await axios.post(endpoint, { url: params })
+        if (response.data) {
+            return pasringTree(response.data)
+        } else return []
+    }
+
+    const request: AxiosResponse<IResult> = await axios.post(
+        "http://localhost:3000/api/status",
+        { url }
+    )
+
+    let menu = []
+
+    if (request.data.RK7QueryResult.Status === "Ok") {
+        menu = await getMenu(url)
+    }
+
+    return {
+        props: {
+            restaurant,
+            connectionState: request.data,
+            menu,
+        },
+    }
+}
