@@ -1,5 +1,5 @@
 import { IRestaurant } from "@/types/common"
-import React, { FC, useState } from "react"
+import React, { FC, memo, useState } from "react"
 import { useRouter } from "next/router"
 
 import styles from "@/styles/RestaurantCard.module.css"
@@ -17,12 +17,14 @@ interface InputProps {
     restaurant: IRestaurant
     idx: number
     sort: GridSize
+    select: (data: IRestaurant) => void
 }
 
-const RestaurantCard: FC<InputProps> = ({ restaurant, idx, sort }) => {
+const RestaurantCard: FC<InputProps> = ({ restaurant, idx, sort, select }) => {
     const router = useRouter()
     const [hover, setHover] = useState<boolean>(false)
     const handleClick = () => {
+        select(restaurant)
         router.push(`/getmenu/${restaurant.id}`)
     }
 
@@ -51,4 +53,4 @@ const RestaurantCard: FC<InputProps> = ({ restaurant, idx, sort }) => {
     )
 }
 
-export default RestaurantCard
+export default memo(RestaurantCard)

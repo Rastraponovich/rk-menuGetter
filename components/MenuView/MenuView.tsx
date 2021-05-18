@@ -1,14 +1,8 @@
 import { IDish, IParsingTreeResult } from "@/types/common"
-import {
-    Card,
-    CardContent,
-    Grid,
-    List,
-    ListItem,
-    ListItemText,
-    Typography,
-} from "@material-ui/core"
+import { Grid } from "@material-ui/core"
 import React, { memo, FC, useCallback, useState, useMemo } from "react"
+import DishCard from "../DishList/DishCard"
+import DishList from "../DishList/DishList"
 import TreeItems from "../TreeItems/TreeItems"
 
 interface InputProps {
@@ -62,39 +56,15 @@ const MenuView: FC<InputProps> = ({ items }) => {
                 />
             </Grid>
             <Grid item xs={6} style={{ borderRight: "1px solid #e0e0e0" }}>
-                <List dense>
-                    {selectedMenuItem.dishes.map((dish) => (
-                        <ListItem
-                            dense
-                            button
-                            selected={dish.Ident === selectedDish.Ident}
-                            divider
-                            onClick={() => selectDish(dish)}
-                            key={dish.Ident + dish.Name}
-                        >
-                            <ListItemText
-                                primary={dish.Name}
-                                secondary={"Цена: " + dish.Price / 100}
-                            />
-                        </ListItem>
-                    ))}
-                </List>
+                <DishList
+                    select={selectDish}
+                    selectedMenuItem={selectedMenuItem}
+                    selectedDish={selectedDish}
+                />
             </Grid>
             <Grid item xs={3}>
                 {selectedDish.Ident === 0 ? null : (
-                    <Card>
-                        <CardContent>
-                            <Typography>
-                                Наименование: {selectedDish.Name}
-                            </Typography>
-                            <Typography>
-                                Цена: {selectedDish.Price / 100}
-                            </Typography>
-                            <Typography>
-                                Каталог: {selectedDish.CategPath}
-                            </Typography>
-                        </CardContent>
-                    </Card>
+                    <DishCard dish={selectedDish} />
                 )}
             </Grid>
         </Grid>

@@ -17,11 +17,9 @@ import {
     Divider,
     FormControlLabel,
     Grid,
-    Paper,
     Typography,
 } from "@material-ui/core"
 import RestaurantButtonLayout from "@/components/Layout/RestaurantButtonLayout"
-import LoadingLayout from "@/components/Layout/LoadingLayout"
 import MenuView from "@/components/MenuView/MenuView"
 
 interface InputProps {
@@ -36,8 +34,6 @@ const Restaurant: NextPage<InputProps> = ({
     menu,
 }) => {
     const router = useRouter()
-
-    const [loading, setLoading] = useState<boolean>(false)
     const [show, setShow] = useState(false)
 
     const [tree, setTree] = useState<IParsingTreeResult[]>(menu)
@@ -61,23 +57,21 @@ const Restaurant: NextPage<InputProps> = ({
         }
     }
 
-    const handleGetMenu = async () => {
-        setLoading(true)
-        const url = `/api/categlist`
-        const response = await axios.get(url)
-
-        if (response.data) {
-            setTree(pasringTree(response.data))
-            setLoading(false)
-        }
-    }
+    // const handleGetMenu = async () => {
+    //     const url = `/api/categlist`
+    //     const params = makeUrl(restaurant.address, restaurant.port)
+    //     const response = await axios.post(url, { url: params })
+    //     if (response.data) {
+    //         setTree(pasringTree(response.data))
+    //     }
+    // }
 
     const checkConnect = useCallback(() => {
         handleCheckConnection()
     }, [status])
 
     const getMenu = useCallback(() => {
-        handleGetMenu()
+        // handleGetMenu()
     }, [status])
 
     const exportMenu = useCallback(() => {}, [status])
@@ -112,13 +106,12 @@ const Restaurant: NextPage<InputProps> = ({
                     <Grid item container xs={6}>
                         <RestaurantButtonLayout
                             checkConnection={checkConnect}
-                            getMenu={getMenu}
+                            // getMenu={getMenu}
                             exportMenu={exportMenu}
                         />
                     </Grid>
                 </Grid>
 
-                <LoadingLayout loading={loading} />
                 <Divider />
                 {show ? <MenuView items={memoTree} /> : null}
 

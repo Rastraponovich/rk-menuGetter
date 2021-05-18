@@ -5,9 +5,10 @@ import RestaurantCard from "../RestaurantCard/RestaurantCard"
 
 interface InputProps {
     restaurants: IRestaurant[]
+    select: (restaurant: IRestaurant) => void
 }
 
-const RestaurantList: FC<InputProps> = ({ restaurants }) => {
+const RestaurantList: FC<InputProps> = ({ restaurants, select }) => {
     const [sort, setSort] = useState<GridSize>(3)
 
     const handleChangeView = () => {
@@ -24,6 +25,7 @@ const RestaurantList: FC<InputProps> = ({ restaurants }) => {
                         idx={idx}
                         key={restaurant.name}
                         sort={sort}
+                        select={select}
                     />
                 ))}
             </Grid>

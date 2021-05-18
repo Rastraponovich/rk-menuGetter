@@ -36,7 +36,6 @@ const TreeItem: FC<InputProps> = ({ treeItem, select, selected }) => {
                 dense
                 selected={selected === treeItem.Ident}
             >
-                {/* <ListItemIcon></ListItemIcon> */}
                 <ListItemText
                     primary={memoTreeItem.Name}
                     secondary={
@@ -75,4 +74,4 @@ const TreeItem: FC<InputProps> = ({ treeItem, select, selected }) => {
     )
 }
 
-export default memo(TreeItem)
+export default TreeItem

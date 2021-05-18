@@ -1,6 +1,6 @@
 import { IParsingTreeResult } from "@/types/common"
 import { List } from "@material-ui/core"
-import React, { FC, memo, useCallback, useMemo, useState } from "react"
+import React, { FC, memo } from "react"
 import TreeItem from "./TreeItem"
 interface InputProps {
     arr: IParsingTreeResult[]
