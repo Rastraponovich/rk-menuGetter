@@ -22,6 +22,7 @@ import {
 
 // import MenuView from "@/components/MenuView/MenuView"
 import dynamic from "next/dynamic"
+import LoadingLayout from "@/components/Layout/LoadingLayout"
 
 const RestaurantButtonLayout = dynamic(
     () => import("@/components/Layout/RestaurantButtonLayout"),
@@ -36,26 +37,23 @@ const MenuView = dynamic(() => import("@/components/MenuView/MenuView"), {
 interface InputProps {
     restaurant: IRestaurant
     connectionState: IResult
-    menu: any
 }
 
-const Restaurant: NextPage<InputProps> = ({
-    connectionState,
-    restaurant,
-    menu,
-}) => {
+const Restaurant: NextPage<InputProps> = ({ connectionState, restaurant }) => {
     const router = useRouter()
     const { address, port, username, password, name } = restaurant
+
     const [show, setShow] = useState(false)
     const [showDeleted, setShowDeleted] = useState(false)
 
-    const [tree, setTree] = useState<IParsingTreeResult[]>(menu)
+    const [tree, setTree] = useState<IParsingTreeResult[]>([])
+    const [loading, setLoading] = useState(false)
     const [info, setInfo] = useState("")
     const [status, setStatus] = useState<string>(
         connectionState.RK7QueryResult?.Status || connectionState.message
     )
 
-    const memoTree = useMemo(() => tree, [tree])
+    const memoTree = useMemo(() => tree.filter((item) => item.Ident), [tree])
 
     const handleCheckConnection = async () => {
         const url: string = makeUrl(address, port)
@@ -82,21 +80,28 @@ const Restaurant: NextPage<InputProps> = ({
         setInfo(infoMessage)
     }
 
-    // const handleGetMenu = async () => {
-    //     const url = `/api/categlist`
-    //     const params = makeUrl(restaurant.address, restaurant.port)
-    //     const response = await axios.post(url, { url: params })
-    //     if (response.data) {
-    //         setTree(pasringTree(response.data))
-    //     }
-    // }
+    const handleGetMenu = async () => {
+        setLoading(true)
+        const endpoint = `/api/categlist`
+        const response = await axios.post(endpoint, restaurant)
+        let result = []
+
+        if (response.data) {
+            result = pasringTree(response.data)
+            setLoading(false)
+        } else {
+            setLoading(false)
+        }
+
+        return result
+    }
 
     const checkConnect = useCallback(() => {
         handleCheckConnection()
     }, [status])
 
-    const getMenu = useCallback(() => {
-        // handleGetMenu()
+    const getMenu = useCallback(async () => {
+        setTree(await handleGetMenu())
     }, [status])
 
     const exportMenu = useCallback(() => {}, [status])
@@ -110,10 +115,8 @@ const Restaurant: NextPage<InputProps> = ({
                 <Typography variant="h3">Ресторан: {name}</Typography>
                 <Grid container spacing={2}>
                     <Grid item xs={6}>
-                        <Typography>
-                            Адрес сервера: {restaurant.address}
-                        </Typography>
-                        <Typography>Порт: {restaurant.port}</Typography>
+                        <Typography>Адрес сервера: {address}</Typography>
+                        <Typography>Порт: {port}</Typography>
                         <Typography>Статус Сервера: {status}</Typography>
                         <Divider />
                         <FormControlLabel
@@ -141,7 +144,7 @@ const Restaurant: NextPage<InputProps> = ({
                         <RestaurantButtonLayout
                             checkConnection={checkConnect}
                             data={memoTree}
-                            // getMenu={getMenu}
+                            getMenu={getMenu}
                             exportMenu={exportMenu}
                         />
                     </Grid>
@@ -151,6 +154,7 @@ const Restaurant: NextPage<InputProps> = ({
                 </Grid>
 
                 <Divider />
+                {loading ? <LoadingLayout loading={loading} /> : null}
                 {show ? (
                     <MenuView items={memoTree} showDeleted={showDeleted} />
                 ) : null}
@@ -175,31 +179,15 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     const restaurant: IRestaurant = restConf.restaurants.find(
         (item) => item.id.toString() === context.query.id
     )
-
-    const getMenu = async () => {
-        const endpoint = `http://localhost:3000/api/categlist`
-        const response = await axios.post(endpoint, restaurant)
-        if (response.data) {
-            return pasringTree(response.data)
-        } else return []
-    }
-
     const request: AxiosResponse<IResult> = await axios.post(
         "http://localhost:3000/api/status",
         restaurant
     )
 
-    let menu = []
-
-    if (request.data?.RK7QueryResult?.Status === "Ok") {
-        menu = await getMenu()
-    }
-
     return {
         props: {
             restaurant,
             connectionState: request.data,
-            menu: menu.filter((item) => item.Ident),
         },
     }
 }
