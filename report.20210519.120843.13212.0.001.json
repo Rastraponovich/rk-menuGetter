@@ -4,10 +4,10 @@
     "reportVersion": 2,
     "event": "Allocation failed - JavaScript heap out of memory",
     "trigger": "FatalError",
-    "filename": "report.20210518.124855.3012.0.001.json",
-    "dumpEventTime": "2021-05-18T12:48:55Z",
-    "dumpEventTimeStamp": "1621331335256",
-    "processId": 3012,
+    "filename": "report.20210519.120843.13212.0.001.json",
+    "dumpEventTime": "2021-05-19T12:08:43Z",
+    "dumpEventTimeStamp": "1621415323372",
+    "processId": 13212,
     "threadId": null,
     "cwd": "D:\\projects\\nextWorker\\rk-menuGetter",
     "commandLine": [
@@ -52,38 +52,38 @@
       {
         "model": "Intel(R) Core(TM) i7-4600U CPU @ 2.10GHz",
         "speed": 2694,
-        "user": 10730203,
+        "user": 2189906,
         "nice": 0,
-        "sys": 5209156,
-        "idle": 29382765,
-        "irq": 481140
+        "sys": 989187,
+        "idle": 5255250,
+        "irq": 90375
       },
       {
         "model": "Intel(R) Core(TM) i7-4600U CPU @ 2.10GHz",
         "speed": 2694,
-        "user": 11189859,
+        "user": 2388625,
         "nice": 0,
-        "sys": 3834890,
-        "idle": 30296890,
-        "irq": 74562
+        "sys": 717859,
+        "idle": 5327390,
+        "irq": 13781
       },
       {
         "model": "Intel(R) Core(TM) i7-4600U CPU @ 2.10GHz",
         "speed": 2694,
-        "user": 12310062,
+        "user": 2599546,
         "nice": 0,
-        "sys": 3917593,
-        "idle": 29093984,
-        "irq": 61421
+        "sys": 773281,
+        "idle": 5061046,
+        "irq": 10578
       },
       {
         "model": "Intel(R) Core(TM) i7-4600U CPU @ 2.10GHz",
         "speed": 2694,
-        "user": 12895484,
+        "user": 2677984,
         "nice": 0,
-        "sys": 3241609,
-        "idle": 29184531,
-        "irq": 49062
+        "sys": 581515,
+        "idle": 5174359,
+        "irq": 7671
       }
     ],
     "networkInterfaces": [
@@ -102,7 +102,7 @@
         "address": "fe80::54b6:1d13:642f:6938",
         "netmask": "ffff:ffff:ffff:ffff::",
         "family": "IPv6",
-        "scopeid": 12
+        "scopeid": 10
       },
       {
         "name": "Беспроводная сеть",
@@ -132,17 +132,17 @@
       {
         "name": "vEthernet (Default Switch)",
         "internal": false,
-        "mac": "ba:15:a9:ac:b6:c2",
-        "address": "fe80::a8f5:4850:9787:d7e1",
+        "mac": "ba:15:a9:46:e2:02",
+        "address": "fe80::fcc6:ce12:6ec3:38f6",
         "netmask": "ffff:ffff:ffff:ffff::",
         "family": "IPv6",
-        "scopeid": 26
+        "scopeid": 24
       },
       {
         "name": "vEthernet (Default Switch)",
         "internal": false,
-        "mac": "ba:15:a9:ac:b6:c2",
-        "address": "172.17.162.81",
+        "mac": "ba:15:a9:46:e2:02",
+        "address": "192.168.228.145",
         "netmask": "255.255.255.240",
         "family": "IPv4"
       }
@@ -157,79 +157,75 @@
   },
   "nativeStack": [
     {
-      "pc": "0x00007ff68dfb2309",
+      "pc": "0x00007ff79dbd2309",
       "symbol": "std::basic_ostream<char,std::char_traits<char> >::operator<<+11577"
     },
     {
-      "pc": "0x00007ff68dfb6869",
+      "pc": "0x00007ff79dbd6869",
       "symbol": "std::basic_ostream<char,std::char_traits<char> >::operator<<+29337"
     },
     {
-      "pc": "0x00007ff68dfb56e8",
+      "pc": "0x00007ff79dbd56e8",
       "symbol": "std::basic_ostream<char,std::char_traits<char> >::operator<<+24856"
     },
     {
-      "pc": "0x00007ff68e0ddd82",
+      "pc": "0x00007ff79dcfdd82",
       "symbol": "v8::base::CPU::has_sse+59378"
     },
     {
-      "pc": "0x00007ff68e8fa27e",
+      "pc": "0x00007ff79e51a27e",
       "symbol": "v8::Isolate::ReportExternalAllocationLimitReached+94"
     },
     {
-      "pc": "0x00007ff68e8e2351",
+      "pc": "0x00007ff79e502351",
       "symbol": "v8::SharedArrayBuffer::Externalize+833"
     },
     {
-      "pc": "0x00007ff68e7ae8ac",
+      "pc": "0x00007ff79e3ce8ac",
       "symbol": "v8::internal::Heap::EphemeronKeyWriteBarrierFromCode+1436"
     },
     {
-      "pc": "0x00007ff68e7b9ae0",
+      "pc": "0x00007ff79e3d9ae0",
       "symbol": "v8::internal::Heap::ProtectUnprotectedMemoryChunks+1312"
     },
     {
-      "pc": "0x00007ff68e7b6604",
+      "pc": "0x00007ff79e3d6604",
       "symbol": "v8::internal::Heap::PageFlagsAreConsistent+3204"
     },
     {
-      "pc": "0x00007ff68e7abe03",
+      "pc": "0x00007ff79e3cbe03",
       "symbol": "v8::internal::Heap::CollectGarbage+1283"
     },
     {
-      "pc": "0x00007ff68e7aa474",
+      "pc": "0x00007ff79e3ca474",
       "symbol": "v8::internal::Heap::AddRetainedMap+2452"
     },
     {
-      "pc": "0x00007ff68e7cb67d",
+      "pc": "0x00007ff79e3eb67d",
       "symbol": "v8::internal::Factory::NewFillerObject+61"
     },
     {
-      "pc": "0x00007ff68e5313d1",
+      "pc": "0x00007ff79e1513d1",
       "symbol": "v8::internal::interpreter::JumpTableTargetOffsets::iterator::operator=+1665"
     },
     {
-      "pc": "0x00007ff68ed4730d",
+      "pc": "0x00007ff79e96730d",
       "symbol": "v8::internal::SetupIsolateDelegate::SetupHeap+546637"
     },
     {
-      "pc": "0x00007ff68ed27749",
-      "symbol": "v8::internal::SetupIsolateDelegate::SetupHeap+416649"
+      "pc": "0x00007ff79e97b797",
+      "symbol": "v8::internal::SetupIsolateDelegate::SetupHeap+629719"
     },
     {
-      "pc": "0x00007ff68ed348f2",
-      "symbol": "v8::internal::SetupIsolateDelegate::SetupHeap+470322"
-    },
-    {
-      "pc": "0x0000000eb0fe852a",
+      "pc": "0x0000037191fa4ed1",
       "symbol": ""
     }
   ],
   "javascriptHeap": {
-    "totalMemory": 2154680320,
-    "totalCommittedMemory": 2154680320,
-    "usedMemory": 2130051760,
-    "availableMemory": 55674024,
+    "totalMemory": 2152693760,
+    "totalCommittedMemory": 2152693760,
+    "usedMemory": 2133875112,
+    "availableMemory": 47036616,
     "memoryLimit": 2197815296,
     "heapSpaces": {
       "read_only_space": {
@@ -240,68 +236,68 @@
         "available": 0
       },
       "new_space": {
-        "memorySize": 4194304,
-        "committedMemory": 4194304,
-        "capacity": 2094912,
-        "used": 188392,
-        "available": 1906520
+        "memorySize": 2097152,
+        "committedMemory": 2097152,
+        "capacity": 1047456,
+        "used": 305136,
+        "available": 742320
       },
       "old_space": {
-        "memorySize": 1756241920,
-        "committedMemory": 1756241920,
-        "capacity": 1748299488,
-        "used": 1739761872,
-        "available": 8537616
+        "memorySize": 1676812288,
+        "committedMemory": 1676812288,
+        "capacity": 1663912552,
+        "used": 1663787248,
+        "available": 125304
       },
       "code_space": {
-        "memorySize": 3313664,
-        "committedMemory": 3313664,
-        "capacity": 2877728,
-        "used": 2877728,
+        "memorySize": 2527232,
+        "committedMemory": 2527232,
+        "capacity": 2119008,
+        "used": 2119008,
         "available": 0
       },
       "map_space": {
-        "memorySize": 5246976,
-        "committedMemory": 5246976,
-        "capacity": 3315280,
-        "used": 3315280,
+        "memorySize": 6557696,
+        "committedMemory": 6557696,
+        "capacity": 5080160,
+        "used": 5080160,
         "available": 0
       },
       "large_object_space": {
-        "memorySize": 383643648,
-        "committedMemory": 383643648,
-        "capacity": 382239744,
-        "used": 382239744,
+        "memorySize": 463233024,
+        "committedMemory": 463233024,
+        "capacity": 461456320,
+        "used": 461456320,
         "available": 0
       },
       "code_large_object_space": {
-        "memorySize": 1777664,
-        "committedMemory": 1777664,
-        "capacity": 1635936,
-        "used": 1635936,
+        "memorySize": 1204224,
+        "committedMemory": 1204224,
+        "capacity": 1094432,
+        "used": 1094432,
         "available": 0
       },
       "new_large_object_space": {
         "memorySize": 0,
         "committedMemory": 0,
-        "capacity": 2094912,
+        "capacity": 1047456,
         "used": 0,
-        "available": 2094912
+        "available": 1047456
       }
     }
   },
   "resourceUsage": {
-    "userCpuSeconds": 2919.63,
-    "kernelCpuSeconds": 219.265,
-    "cpuConsumptionPercent": 45.5241,
-    "maxRss": 3117318144,
+    "userCpuSeconds": 730.14,
+    "kernelCpuSeconds": 51.218,
+    "cpuConsumptionPercent": 78.4496,
+    "maxRss": 2952564736,
     "pageFaults": {
-      "IORequired": 17493828,
+      "IORequired": 5341612,
       "IONotRequired": 0
     },
     "fsActivity": {
-      "reads": 55357,
-      "writes": 1230809
+      "reads": 12107,
+      "writes": 564776
     }
   },
   "libuv": [
@@ -312,7 +308,7 @@
     "=D:": "D:\\projects\\nextWorker\\rk-menuGetter",
     "ALLUSERSPROFILE": "C:\\ProgramData",
     "APPDATA": "C:\\Users\\Wilde\\AppData\\Roaming",
-    "CHROME_CRASHPAD_PIPE_NAME": "\\\\.\\pipe\\crashpad_2992_RVKIBIRIHKHRINZJ",
+    "CHROME_CRASHPAD_PIPE_NAME": "\\\\.\\pipe\\crashpad_9632_HFFMHJYWAXQFQUZP",
     "COLOR": "1",
     "COLORTERM": "truecolor",
     "COMMONPROGRAMFILES": "C:\\Program Files\\Common Files",
@@ -323,8 +319,6 @@
     "DriverData": "C:\\Windows\\System32\\Drivers\\DriverData",
     "EDITOR": "notepad.exe",
     "EXEPATH": "C:\\Program Files\\Git\\bin",
-    "FPS_BROWSER_APP_PROFILE_STRING": "Internet Explorer",
-    "FPS_BROWSER_USER_PROFILE_STRING": "Default",
     "GIT_ASKPASS": "c:\\Users\\Wilde\\AppData\\Local\\Programs\\Microsoft VS Code\\resources\\app\\extensions\\git\\dist\\askpass.sh",
     "HOME": "C:\\Users\\Wilde",
     "HOMEDRIVE": "C:",
@@ -383,7 +377,7 @@
     "TERM_PROGRAM": "vscode",
     "TERM_PROGRAM_VERSION": "1.56.2",
     "TMP": "C:\\Users\\Wilde\\AppData\\Local\\Temp",
-    "TRACE_ID": "8e0b899028a7467d",
+    "TRACE_ID": "b8811cb3bfa69803",
     "URL": "https://10.20.31.2:86/rk7api/v0/xmlinterface.xml",
     "USERDOMAIN": "LENOVO-PC",
     "USERDOMAIN_ROAMINGPROFILE": "LENOVO-PC",
@@ -404,25 +398,25 @@
     "C:\\Windows\\System32\\KERNELBASE.dll",
     "C:\\Windows\\System32\\WS2_32.dll",
     "C:\\Windows\\System32\\RPCRT4.dll",
-    "C:\\Windows\\SYSTEM32\\dbghelp.dll",
     "C:\\Windows\\System32\\PSAPI.DLL",
-    "C:\\Windows\\System32\\ucrtbase.dll",
     "C:\\Windows\\System32\\ADVAPI32.dll",
     "C:\\Windows\\System32\\msvcrt.dll",
     "C:\\Windows\\System32\\sechost.dll",
+    "C:\\Windows\\SYSTEM32\\dbghelp.dll",
+    "C:\\Windows\\System32\\ucrtbase.dll",
     "C:\\Windows\\System32\\USER32.dll",
     "C:\\Windows\\SYSTEM32\\IPHLPAPI.DLL",
+    "C:\\Windows\\SYSTEM32\\USERENV.dll",
+    "C:\\Windows\\System32\\profapi.dll",
     "C:\\Windows\\System32\\win32u.dll",
     "C:\\Windows\\System32\\GDI32.dll",
-    "C:\\Windows\\SYSTEM32\\USERENV.dll",
     "C:\\Windows\\System32\\gdi32full.dll",
-    "C:\\Windows\\System32\\profapi.dll",
     "C:\\Windows\\System32\\msvcp_win.dll",
     "C:\\Windows\\System32\\CRYPT32.dll",
     "C:\\Windows\\System32\\MSASN1.dll",
     "C:\\Windows\\System32\\bcrypt.dll",
     "C:\\Windows\\SYSTEM32\\WINMM.dll",
-    "C:\\Windows\\SYSTEM32\\winmmbase.dll",
+    "C:\\Windows\\SYSTEM32\\WINMMBASE.dll",
     "C:\\Windows\\System32\\cfgmgr32.dll",
     "C:\\Windows\\System32\\IMM32.DLL",
     "C:\\Program Files\\Common Files\\Crypto Pro\\AppCompat\\cpcrypt.dll",

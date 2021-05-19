@@ -1,17 +1,23 @@
 import { Button, Paper } from "@material-ui/core"
-import React, { FC, memo } from "react"
+import React, { FC, memo, useEffect, useState } from "react"
+import dynamic from "next/dynamic"
 
 interface InputProps {
     checkConnection?: () => void
     getMenu?: () => void
     exportMenu?: () => void
+    data?: any
 }
 
 const RestaurantButtonLayout: FC<InputProps> = ({
     checkConnection,
     getMenu,
     exportMenu,
+    data,
 }) => {
+    const result = data.map((item) => JSON.stringify(item, null, " "))
+    const blob = new Blob([result], { type: "application/json" })
+
     return (
         <div className="button__group">
             <Button
@@ -39,7 +45,9 @@ const RestaurantButtonLayout: FC<InputProps> = ({
                 disabled={!exportMenu}
                 onClick={exportMenu}
             >
-                Сохранить в файл
+                <a href={URL.createObjectURL(blob)} download="my-text.txt">
+                    Сохранить в файл
+                </a>
             </Button>
         </div>
     )

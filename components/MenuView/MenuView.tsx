@@ -7,12 +7,14 @@ import TreeItems from "../TreeItems/TreeItems"
 
 interface InputProps {
     items: IParsingTreeResult[]
+    showDeleted: boolean
 }
 
 const bulk: IParsingTreeResult = {
     Name: "",
     Type: "",
     Ident: 0,
+    Status: "",
     childs: [],
     dishes: [],
 }
@@ -21,11 +23,12 @@ const bulkDish: IDish = {
     Name: "",
     Type: "dish",
     CategPath: "",
+    Status: "",
     Ident: 0,
     Price: 0,
 }
 
-const MenuView: FC<InputProps> = ({ items }) => {
+const MenuView: FC<InputProps> = ({ items, showDeleted }) => {
     const [selectedMenuItem, setSelectedMenuItem] =
         useState<IParsingTreeResult>(bulk)
 
@@ -53,6 +56,7 @@ const MenuView: FC<InputProps> = ({ items }) => {
                     arr={memoItems}
                     select={selectMenuItem}
                     selected={selectedMenuItem}
+                    showDeleted={showDeleted}
                 />
             </Grid>
             <Grid item xs={6} style={{ borderRight: "1px solid #e0e0e0" }}>
@@ -60,6 +64,7 @@ const MenuView: FC<InputProps> = ({ items }) => {
                     select={selectDish}
                     selectedMenuItem={selectedMenuItem}
                     selectedDish={selectedDish}
+                    showDeleted={showDeleted}
                 />
             </Grid>
             <Grid item xs={3}>

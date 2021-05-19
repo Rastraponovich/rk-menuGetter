@@ -17,7 +17,9 @@ const cred: ICred = {
 
 export const getData = async (
     schema: string,
-    url?: string
+    url?: string,
+    username?: string,
+    password?: string
 ): Promise<IResult> => {
     try {
         const result = await axios.post(url, schema, {
@@ -25,7 +27,7 @@ export const getData = async (
                 "Content-Type": "xml/text",
             },
             httpsAgent: agent,
-            auth: cred,
+            auth: username ? { username, password } : cred,
         })
         return xmlParser(result.data)
     } catch (error) {

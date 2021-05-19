@@ -1,28 +1,35 @@
-import { IParsingTreeResult } from "@/types/common"
+import { IDish, IParsingTreeResult } from "@/types/common"
 import { IRIChildItems } from "@/types/rk7"
 import { ICategListItem } from "@/types/rk7CategList"
 import { IMenuItem } from "@/types/rk7Menuitems"
+
+export const getStatusItem = (value: string): string => {
+    switch (value) {
+        case "rsDeleted":
+            return "Удален"
+        case "rsInactive":
+            return "Неактивен"
+        case "rsActive":
+            return "Активен"
+        case "rsDraft":
+            return "Черновик"
+        default:
+            break
+    }
+}
 
 export const pasringTree = (value: any): IParsingTreeResult[] => {
     const result: IRIChildItems =
         value.RK7QueryResult.CommandResult.RK7Reference.RIChildItems
     if (Array.isArray(result.TCategListItem)) {
-        const output = result.TCategListItem.map((item) => {
+        return result.TCategListItem.map((item) => {
             return { ...parsingDirectory(item) }
         })
-
-        return output
     } else {
-        const output = parsingDirectory(result.TCategListItem).childs
-        console.log(output, "obj")
-
-        return output
+        return parsingDirectory(result.TCategListItem).childs
     }
 }
-
 const parsingDirectory = (item: ICategListItem | ICategListItem[]) => {
-    //1000007
-
     if (Array.isArray(item)) {
         return item.map((element) => {
             let childs: any
@@ -37,6 +44,8 @@ const parsingDirectory = (item: ICategListItem | ICategListItem[]) => {
             return {
                 Name: element.Name,
                 Ident: element.Ident,
+                Status: element.Status,
+                Type: "category",
                 childs: childs || [],
                 dishes: dishes || [],
             }
@@ -50,6 +59,8 @@ const parsingDirectory = (item: ICategListItem | ICategListItem[]) => {
             return {
                 Ident: item.Ident,
                 Name: item.Name,
+                Status: item.Status,
+                Type: "category",
                 childs:
                     parsingDirectory(item.RIChildItems.TCategListItem) || [],
                 dishes: dishes || [],
@@ -59,6 +70,7 @@ const parsingDirectory = (item: ICategListItem | ICategListItem[]) => {
             return {
                 Ident: item.Ident,
                 Name: item.Name,
+                Status: item.Status,
                 childs: [],
                 Type: "category",
                 dishes: parsingDishes(item.RIChildItems.TRK7MenuItem) || [],
@@ -67,12 +79,13 @@ const parsingDirectory = (item: ICategListItem | ICategListItem[]) => {
     }
 }
 
-const parsingDishes = (dish: IMenuItem | IMenuItem[]) => {
+const parsingDishes = (dish: IMenuItem | IMenuItem[]): IDish[] => {
     if (Array.isArray(dish)) {
         return dish.map((item) => {
             return {
                 Name: item.Name,
                 Ident: item.Ident,
+                Status: item.Status,
                 Type: "dish",
                 CategPath: item.CategPath,
                 Price: item["PRICETYPES-3"],
@@ -84,6 +97,7 @@ const parsingDishes = (dish: IMenuItem | IMenuItem[]) => {
                 Name: dish.Name,
                 Ident: dish.Ident,
                 Type: "dish",
+                Status: dish.Status,
                 CategPath: dish.CategPath,
                 Price: dish["PRICETYPES-3"],
             },

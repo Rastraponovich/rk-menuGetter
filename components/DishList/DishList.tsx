@@ -7,23 +7,29 @@ interface InputProps {
     selectedMenuItem: IParsingTreeResult
     selectedDish: IDish
     select: (dish: IDish) => void
+    showDeleted: boolean
 }
 
 const DishList: FC<InputProps> = ({
     selectedMenuItem,
     selectedDish,
     select,
+    showDeleted,
 }) => {
+    const filter = showDeleted ? "" : "rsDeleted"
+
     return (
         <List dense>
-            {selectedMenuItem.dishes.map((dish) => (
-                <DIshItem
-                    select={select}
-                    selected={selectedDish}
-                    dish={dish}
-                    key={dish.Ident + dish.Name}
-                />
-            ))}
+            {selectedMenuItem.dishes
+                .filter((fil) => fil.Status !== filter)
+                .map((dish) => (
+                    <DIshItem
+                        select={select}
+                        selected={selectedDish}
+                        dish={dish}
+                        key={dish.Ident + dish.Name}
+                    />
+                ))}
         </List>
     )
 }

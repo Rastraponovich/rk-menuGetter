@@ -21,6 +21,7 @@ export interface IErrorResponse {
 export interface IParsingTreeResult {
     Name: string
     Ident: number
+    Status: string
     Type: string
     childs?: IParsingTreeResult[]
     dishes?: IDish[]
@@ -31,6 +32,7 @@ export interface IDish {
     Type: string
     CategPath: string
     Price: number
+    Status: string
 }
 
 export interface IRestaurant {
@@ -39,4 +41,6 @@ export interface IRestaurant {
     name: string
     genRestName: string
     id: number
+    username: string
+    password: string
 }

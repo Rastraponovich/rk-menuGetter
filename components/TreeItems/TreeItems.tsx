@@ -6,21 +6,27 @@ interface InputProps {
     arr: IParsingTreeResult[]
     select?: (menuItem: IParsingTreeResult) => void
     selected?: IParsingTreeResult
+    showDeleted: boolean
 }
 
-const TreeItems: FC<InputProps> = ({ arr, select, selected }) => {
+const TreeItems: FC<InputProps> = ({ arr, select, selected, showDeleted }) => {
     console.info("render treeList")
+
+    const flter = showDeleted ? "" : "rsDeleted"
 
     return (
         <List dense>
-            {arr.map((item) => (
-                <TreeItem
-                    key={item.Ident + item.Name}
-                    treeItem={item}
-                    select={select}
-                    selected={selected.Ident}
-                />
-            ))}
+            {arr
+                .filter((filter) => filter.Status !== flter)
+                .map((item) => (
+                    <TreeItem
+                        key={item.Ident + item.Name}
+                        treeItem={item}
+                        select={select}
+                        selected={selected.Ident}
+                        showDeleted={flter}
+                    />
+                ))}
         </List>
     )
 }

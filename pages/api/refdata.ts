@@ -15,10 +15,10 @@ export default async (
             WithChildItems: childs ? "1" : "0",
             IgnoreDefaults: defaults ? "1" : "0",
         }
-
+        const url = "https://10.20.30.2:86/rk7api/v0/xmlinterface.xml"
         const schema = GetRefData({ name, filter, params })
         console.log(schema)
-        const result = await getData(schema)
+        const result = await getData(schema, url, "Wilde", "1024")
         res.status(200).json({ ...result })
     } catch (error) {
         console.log(error)

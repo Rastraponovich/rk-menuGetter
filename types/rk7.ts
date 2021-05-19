@@ -24,7 +24,6 @@ export interface IRK7Reference {
     ClassName: string
     DataVersion: number
     DeleteRight: number
-    // Items: Object { Item: {…} }
     LeafCollectionCount: number
     MaxIdent: number
     MinIdent: number

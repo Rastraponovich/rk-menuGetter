@@ -12,6 +12,8 @@ export const restConf: IRestConf = {
             name: "Лондон",
             genRestName: "Лондон",
             id: 30,
+            username: "Wilde",
+            password: "1024",
         },
         {
             address: "10.20.31.2",
@@ -19,6 +21,8 @@ export const restConf: IRestConf = {
             name: "Сибас",
             genRestName: "Сибас",
             id: 31,
+            username: "Wilde",
+            password: "1024",
         },
         {
             address: "10.20.2.2",
@@ -26,6 +30,8 @@ export const restConf: IRestConf = {
             name: "ЯпонаМама",
             genRestName: "ЯпонаМама",
             id: 5,
+            username: "Wilde",
+            password: "1101",
         },
         {
             address: "10.20.5.2",
@@ -33,6 +39,8 @@ export const restConf: IRestConf = {
             name: "ХмелиСунели",
             genRestName: "ХмелиСунели",
             id: 6,
+            username: "Wilde",
+            password: "1101",
         },
         {
             address: "10.20.3.2",
@@ -40,6 +48,8 @@ export const restConf: IRestConf = {
             name: "Синдикат",
             genRestName: "Синдикат",
             id: 3,
+            username: "Wilde",
+            password: "1101",
         },
     ],
 }

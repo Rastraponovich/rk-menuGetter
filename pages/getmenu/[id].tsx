@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from "react"
+import React, { useCallback, useEffect, useMemo, useState } from "react"
 import { GetServerSideProps, NextPage } from "next"
 
 import { useRouter } from "next/router"
@@ -19,8 +19,19 @@ import {
     Grid,
     Typography,
 } from "@material-ui/core"
-import RestaurantButtonLayout from "@/components/Layout/RestaurantButtonLayout"
-import MenuView from "@/components/MenuView/MenuView"
+
+// import MenuView from "@/components/MenuView/MenuView"
+import dynamic from "next/dynamic"
+
+const RestaurantButtonLayout = dynamic(
+    () => import("@/components/Layout/RestaurantButtonLayout"),
+    {
+        ssr: false,
+    }
+)
+const MenuView = dynamic(() => import("@/components/MenuView/MenuView"), {
+    ssr: false,
+})
 
 interface InputProps {
     restaurant: IRestaurant
@@ -34,27 +45,41 @@ const Restaurant: NextPage<InputProps> = ({
     menu,
 }) => {
     const router = useRouter()
+    const { address, port, username, password, name } = restaurant
     const [show, setShow] = useState(false)
+    const [showDeleted, setShowDeleted] = useState(false)
 
     const [tree, setTree] = useState<IParsingTreeResult[]>(menu)
+    const [info, setInfo] = useState("")
     const [status, setStatus] = useState<string>(
-        connectionState.RK7QueryResult.Status
+        connectionState.RK7QueryResult?.Status || connectionState.message
     )
 
     const memoTree = useMemo(() => tree, [tree])
 
     const handleCheckConnection = async () => {
-        const url: string = makeUrl(restaurant.address, restaurant.port)
+        const url: string = makeUrl(address, port)
         const request: AxiosResponse<IResult> = await axios.post(
             "/api/status",
-            { url }
+            { url, username, password }
         )
+        let infoMessage = ""
 
-        if (request.data?.RK7QueryResult.Status) {
+        if (request.data?.RK7QueryResult?.Status) {
             setStatus(request.data.RK7QueryResult.Status)
+            for (let [key, value] of Object.entries(
+                request.data.RK7QueryResult
+            )) {
+                infoMessage += `${key}: ${value} ,`
+            }
         } else {
             setStatus(request.data.message)
+
+            for (let [key, value] of Object.entries(request.data)) {
+                infoMessage += `${key}: ${value} ,`
+            }
         }
+        setInfo(infoMessage)
     }
 
     // const handleGetMenu = async () => {
@@ -80,11 +105,9 @@ const Restaurant: NextPage<InputProps> = ({
         router.back()
     }
     return (
-        <Layout title={`Ресторан : ${restaurant.name}`}>
+        <Layout title={`Ресторан : ${name}`}>
             <section className={styles.block}>
-                <Typography variant="h3">
-                    Ресторан: {restaurant.name}
-                </Typography>
+                <Typography variant="h3">Ресторан: {name}</Typography>
                 <Grid container spacing={2}>
                     <Grid item xs={6}>
                         <Typography>
@@ -102,18 +125,35 @@ const Restaurant: NextPage<InputProps> = ({
                             }
                             label="Показать меню"
                         />
+                        <FormControlLabel
+                            control={
+                                <Checkbox
+                                    checked={showDeleted}
+                                    onChange={() =>
+                                        setShowDeleted(!showDeleted)
+                                    }
+                                />
+                            }
+                            label="Показать Удаленные"
+                        />
                     </Grid>
-                    <Grid item container xs={6}>
+                    <Grid item container xs={3}>
                         <RestaurantButtonLayout
                             checkConnection={checkConnect}
+                            data={memoTree}
                             // getMenu={getMenu}
                             exportMenu={exportMenu}
                         />
                     </Grid>
+                    <Grid item xs={3}>
+                        {info.length > 0 ? info : null}
+                    </Grid>
                 </Grid>
 
                 <Divider />
-                {show ? <MenuView items={memoTree} /> : null}
+                {show ? (
+                    <MenuView items={memoTree} showDeleted={showDeleted} />
+                ) : null}
 
                 <div style={{ flexGrow: 1 }}></div>
                 <Button
@@ -135,11 +175,10 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     const restaurant: IRestaurant = restConf.restaurants.find(
         (item) => item.id.toString() === context.query.id
     )
-    const url = makeUrl(restaurant.address, restaurant.port)
 
-    const getMenu = async (params?: any) => {
+    const getMenu = async () => {
         const endpoint = `http://localhost:3000/api/categlist`
-        const response = await axios.post(endpoint, { url: params })
+        const response = await axios.post(endpoint, restaurant)
         if (response.data) {
             return pasringTree(response.data)
         } else return []
@@ -147,20 +186,20 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
     const request: AxiosResponse<IResult> = await axios.post(
         "http://localhost:3000/api/status",
-        { url }
+        restaurant
     )
 
     let menu = []
 
-    if (request.data.RK7QueryResult.Status === "Ok") {
-        menu = await getMenu(url)
+    if (request.data?.RK7QueryResult?.Status === "Ok") {
+        menu = await getMenu()
     }
 
     return {
         props: {
             restaurant,
             connectionState: request.data,
-            menu,
+            menu: menu.filter((item) => item.Ident),
         },
     }
 }

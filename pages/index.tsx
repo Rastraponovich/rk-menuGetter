@@ -29,7 +29,8 @@ const Home: NextPage<InputProps> = ({ restaurants }) => {
         <Layout title="Главная">
             <h2>hello</h2>
 
-            <LoadingLayout loading={loading} />
+            {loading ? <LoadingLayout loading={loading} /> : null}
+
             <RestaurantList restaurants={restaurants} select={handleClick} />
 
             <Link href="/getmenu">Меню</Link>

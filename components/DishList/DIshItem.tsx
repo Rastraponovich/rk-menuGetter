@@ -1,3 +1,4 @@
+import { getStatusItem } from "@/lib/parsingTree"
 import { IDish } from "@/types/common"
 import { ListItem, ListItemText } from "@material-ui/core"
 import React, { FC, memo } from "react"
@@ -12,6 +13,7 @@ const DIshItem: FC<InputProps> = ({ dish, select, selected }) => {
     const handleClick = () => {
         select(dish)
     }
+    const dishStatus = getStatusItem(dish.Status)
 
     return (
         <ListItem
@@ -23,7 +25,8 @@ const DIshItem: FC<InputProps> = ({ dish, select, selected }) => {
         >
             <ListItemText
                 primary={dish.Name}
-                secondary={"Цена: " + dish.Price / 100}
+                // secondary={"Цена: " + dish.Price / 100}
+                secondary={dishStatus}
             />
         </ListItem>
     )
