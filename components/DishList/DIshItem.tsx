@@ -1,8 +1,8 @@
 import { getStatusItem } from "@/lib/parsingTree"
 import { IDish } from "@/types/common"
-import { ListItem, ListItemText } from "@material-ui/core"
+import { ListItem, ListItemIcon, ListItemText } from "@material-ui/core"
 import React, { FC, memo } from "react"
-
+import InsertDriveFileRoundedIcon from "@material-ui/icons/InsertDriveFileRounded"
 interface InputProps {
     dish: IDish
     select: (dish: IDish) => void
@@ -10,23 +10,26 @@ interface InputProps {
 }
 
 const DIshItem: FC<InputProps> = ({ dish, select, selected }) => {
+    const { name, price, status, type, ident } = dish
     const handleClick = () => {
         select(dish)
     }
-    const dishStatus = getStatusItem(dish.Status)
 
     return (
         <ListItem
             dense
             button
-            selected={dish.Ident === selected.Ident}
+            selected={ident === selected.ident}
             divider
             onClick={handleClick}
         >
+            <ListItemIcon>
+                <InsertDriveFileRoundedIcon />
+            </ListItemIcon>
             <ListItemText
-                primary={dish.Name}
+                primary={name}
                 // secondary={"Цена: " + dish.Price / 100}
-                secondary={dishStatus}
+                secondary={status}
             />
         </ListItem>
     )

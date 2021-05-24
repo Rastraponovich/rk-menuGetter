@@ -1,36 +1,38 @@
 import React, { FC } from "react"
-import {
-    AppBar,
-    Box,
-    Toolbar,
-    Typography,
-    Button,
-    IconButton,
-} from "@material-ui/core"
+import { AppBar, Toolbar, Typography, withStyles } from "@material-ui/core"
 
-import MenuIcon from "@material-ui/icons/Menu"
+import { useRouter } from "next/router"
 
 interface InputProps {
     title: string
 }
 
 const Header: FC<InputProps> = ({ title }) => {
+    const router = useRouter()
+
+    const hanldeClick = () => {
+        router.push("/")
+    }
+
+    const StyledToolbar = withStyles({
+        root: {
+            background: "linear-gradient(45deg, #4BA25D 30%, #70D27B 90%)",
+        },
+    })(Toolbar)
+
     return (
         <AppBar position="static">
-            <Toolbar>
-                <IconButton
-                    edge="start"
-                    color="inherit"
-                    aria-label="menu"
-                    sx={{ mr: 2 }}
+            <StyledToolbar>
+                <Typography
+                    variant="h6"
+                    component="div"
+                    sx={{ cursor: "pointer" }}
+                    onClick={hanldeClick}
                 >
-                    <MenuIcon />
-                </IconButton>
-                <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
                     {title}
                 </Typography>
-                <Button color="inherit">Login</Button>
-            </Toolbar>
+                <div className="bulk"></div>
+            </StyledToolbar>
         </AppBar>
     )
 }

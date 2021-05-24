@@ -7,12 +7,13 @@ interface InputProps {
 }
 
 const DishCard: FC<InputProps> = ({ dish }) => {
+    const { name, ident, status, price, type, categPath } = dish
     return (
         <Card>
             <CardContent>
-                <Typography>Наименование: {dish.Name}</Typography>
-                <Typography>Цена: {dish.Price / 100}</Typography>
-                <Typography>Каталог: {dish.CategPath}</Typography>
+                <Typography>Наименование: {name}</Typography>
+                <Typography>Цена: {price}</Typography>
+                <Typography>Каталог: {categPath}</Typography>
             </CardContent>
         </Card>
     )

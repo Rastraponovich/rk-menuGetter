@@ -16,18 +16,18 @@ const DishList: FC<InputProps> = ({
     select,
     showDeleted,
 }) => {
-    const filter = showDeleted ? "" : "rsDeleted"
+    const filter = showDeleted ? "" : "Удален"
 
     return (
         <List dense>
-            {selectedMenuItem.dishes
-                .filter((fil) => fil.Status !== filter)
+            {selectedMenuItem?.dishes
+                .filter((fil) => fil.status !== filter)
                 .map((dish) => (
                     <DIshItem
                         select={select}
                         selected={selectedDish}
                         dish={dish}
-                        key={dish.Ident + dish.Name}
+                        key={dish.ident + dish.name}
                     />
                 ))}
         </List>

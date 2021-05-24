@@ -1,6 +1,6 @@
 import axios, { AxiosError } from "axios"
 import { Agent } from "https"
-import { ICred, IErrorResponse, IResult } from "@/types/common"
+import { ICred, IResult } from "@/types/common"
 import { xmlParser } from "./xmlParser"
 
 const agent = new Agent({
@@ -8,8 +8,6 @@ const agent = new Agent({
     rejectUnauthorized: false,
 })
 
-const URL = "https://10.20.30.2:86/rk7api/v0/xmlinterface.xml"
-//process.env.URL ||
 const cred: ICred = {
     username: `${process.env.LOGIN}` || "Wilde",
     password: `${process.env.PASS}` || "1024",
@@ -31,6 +29,7 @@ export const getData = async (
         })
         return xmlParser(result.data)
     } catch (error) {
+        console.log("error in lib")
         const { code, isAxiosError, message }: AxiosError = error
         return { code, isAxiosError, message }
     }

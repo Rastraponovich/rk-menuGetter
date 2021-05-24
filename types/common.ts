@@ -19,28 +19,40 @@ export interface IErrorResponse {
 }
 
 export interface IParsingTreeResult {
-    Name: string
-    Ident: number
-    Status: string
-    Type: string
+    name: string
+    ident: number
+    parent: number
+    status: string
+    type: string
     childs?: IParsingTreeResult[]
     dishes?: IDish[]
 }
 export interface IDish {
-    Name: string
-    Ident: number
-    Type: string
-    CategPath: string
-    Price: number
-    Status: string
+    name: string
+    ident: number
+    type: string
+    categPath: string
+    price: number
+    status: string
 }
 
 export interface IRestaurant {
     address: string
     port: number
     name: string
-    genRestName: string
+    genRestName?: string
     id: number
     username: string
     password: string
+    ident?: number
+    type?: string
+}
+
+export interface IParceCategListItem {
+    ident: number
+    name: string
+    parent: number
+    status: string
+    type: string
+    childs?: IParceCategListItem[] | []
 }

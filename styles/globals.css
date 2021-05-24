@@ -26,6 +26,9 @@ a {
     flex-grow: 1;
     overflow-y: auto;
 }
+.bulk {
+    flex-grow: 1;
+}
 .button__group {
     display: flex;
     flex-direction: column;

@@ -1,13 +1,21 @@
-import React, { useCallback, useEffect, useState } from "react"
+import React, { useCallback, useState } from "react"
 import Link from "next/link"
 import { restConf } from "@/restconf/restconf"
-import { IRestaurant } from "@/types/common"
+import { IRestaurant, IResult } from "@/types/common"
 
 import Layout from "@/components/Layout/Layout"
 import RestaurantList from "@/components/RestaurantList/RestaurantList"
 import { GetServerSideProps, NextPage } from "next"
-import { Typography } from "@material-ui/core"
+import {
+    Backdrop,
+    Button,
+    CircularProgress,
+    Typography,
+    useTheme,
+} from "@material-ui/core"
 import LoadingLayout from "@/components/Layout/LoadingLayout"
+import axios, { AxiosResponse } from "axios"
+import { makeUrl } from "@/lib/getData"
 
 interface InputProps {
     restaurants: IRestaurant[]
@@ -16,7 +24,7 @@ interface InputProps {
 const Home: NextPage<InputProps> = ({ restaurants }) => {
     const [loading, setLoading] = useState<boolean>(false)
     const [selectedRestaurant, setSelectedRestaurant] = useState<IRestaurant>()
-
+    const theme = useTheme()
     const handleClick = useCallback(
         (restaurant: IRestaurant) => {
             setSelectedRestaurant(restaurant)
@@ -24,16 +32,24 @@ const Home: NextPage<InputProps> = ({ restaurants }) => {
         },
         [setSelectedRestaurant]
     )
+    const handleClose = () => {
+        setLoading(false)
+    }
 
     return (
-        <Layout title="Главная">
-            <h2>hello</h2>
-
-            {loading ? <LoadingLayout loading={loading} /> : null}
-
+        <Layout title="Главная" loading={loading}>
             <RestaurantList restaurants={restaurants} select={handleClick} />
 
-            <Link href="/getmenu">Меню</Link>
+            <Backdrop
+                sx={{
+                    zIndex: theme.zIndex.drawer + 1,
+                    color: "#fff",
+                }}
+                open={loading}
+                onClick={handleClose}
+            >
+                <CircularProgress color="inherit" />
+            </Backdrop>
         </Layout>
     )
 }

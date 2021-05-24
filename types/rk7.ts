@@ -33,7 +33,13 @@ export interface IRK7Reference {
     ViewRight: number
     XMLExport: boolean
     XMLMask: string
+    Items?: IItems
 }
+
+interface IItems {
+    Item?: ICategListItem[] | any[]
+}
+
 export interface ISourceCommand {
     RK7Command2: IRK7Command2
 }

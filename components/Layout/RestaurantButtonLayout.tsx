@@ -1,26 +1,29 @@
-import { Button, Paper } from "@material-ui/core"
+import { Button, Divider, Paper, Typography } from "@material-ui/core"
 import React, { FC, memo, useEffect, useState } from "react"
 import dynamic from "next/dynamic"
-
+import { LoadingButton } from "@material-ui/lab"
 interface InputProps {
     checkConnection?: () => void
     getMenu?: () => void
     exportMenu?: () => void
-    data?: any
+    loading: boolean
+    loadingStatus: boolean
 }
 
 const RestaurantButtonLayout: FC<InputProps> = ({
     checkConnection,
     getMenu,
     exportMenu,
-    data,
+    loading,
+    loadingStatus,
 }) => {
-    const result = data.map((item) => JSON.stringify(item, null, " "))
-    const blob = new Blob([result], { type: "application/json" })
-
     return (
         <div className="button__group">
-            <Button
+            <Typography>Функции</Typography>
+            <Divider />
+
+            <LoadingButton
+                loading={loadingStatus}
                 size="small"
                 variant="contained"
                 color="primary"
@@ -28,8 +31,9 @@ const RestaurantButtonLayout: FC<InputProps> = ({
                 onClick={checkConnection}
             >
                 Проверка связи
-            </Button>
-            <Button
+            </LoadingButton>
+            <LoadingButton
+                loading={loading}
                 size="small"
                 variant="contained"
                 color="primary"
@@ -37,7 +41,7 @@ const RestaurantButtonLayout: FC<InputProps> = ({
                 onClick={getMenu}
             >
                 Получить меню
-            </Button>
+            </LoadingButton>
             <Button
                 size="small"
                 variant="contained"
@@ -45,9 +49,7 @@ const RestaurantButtonLayout: FC<InputProps> = ({
                 disabled={!exportMenu}
                 onClick={exportMenu}
             >
-                <a href={URL.createObjectURL(blob)} download="my-text.txt">
-                    Сохранить в файл
-                </a>
+                Сохранить в файл
             </Button>
         </div>
     )

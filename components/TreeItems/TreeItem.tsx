@@ -1,15 +1,31 @@
 import { getStatusItem } from "@/lib/parsingTree"
-import { IParsingTreeResult } from "@/types/common"
+import {
+    IParceCategListItem,
+    IParsingTreeResult,
+    IRestaurant,
+} from "@/types/common"
 import {
     Collapse,
     List,
     ListItem,
+    ListItemIcon,
     ListItemText,
     MenuItem,
     Typography,
 } from "@material-ui/core"
-import { ExpandLess, ExpandMore } from "@material-ui/icons"
-import React, { FC, memo, useCallback, useMemo, useState } from "react"
+import ExpandMore from "@material-ui/icons/ExpandMore"
+import ExpandLess from "@material-ui/icons/ExpandLess"
+
+import FolderRoundedIcon from "@material-ui/icons/FolderRounded"
+import axios from "axios"
+import React, {
+    FC,
+    memo,
+    useCallback,
+    useEffect,
+    useMemo,
+    useState,
+} from "react"
 
 interface InputProps {
     treeItem: IParsingTreeResult
@@ -25,12 +41,13 @@ const TreeItem: FC<InputProps> = ({
     showDeleted,
 }) => {
     const [open, setOpen] = useState(false)
+    const { name, ident, parent, type, status } = treeItem
 
     const memoTreeItem = useMemo(() => treeItem, [treeItem])
 
-    console.log("render treeitem", treeItem.Name)
+    console.log("render treeitem", name)
 
-    const itemStatus = getStatusItem(memoTreeItem.Status)
+    // const itemStatus = getStatusItem(memoTreeItem.Status)
 
     const handleClick = useCallback(() => {
         select(memoTreeItem)
@@ -44,12 +61,12 @@ const TreeItem: FC<InputProps> = ({
                 onClick={handleClick}
                 divider
                 dense
-                selected={selected === treeItem.Ident}
+                selected={selected === ident}
             >
-                <ListItemText
-                    primary={memoTreeItem?.Name}
-                    secondary={itemStatus}
-                />
+                <ListItemIcon>
+                    <FolderRoundedIcon />
+                </ListItemIcon>
+                <ListItemText primary={name} secondary={status} />
                 {/* <Typography variant="caption">
                     Количество блюд : {memoTreeItem.dishes.length}
                 </Typography> */}
@@ -64,13 +81,13 @@ const TreeItem: FC<InputProps> = ({
             </ListItem>
             {memoTreeItem.childs?.length > 0
                 ? memoTreeItem.childs
-                      .filter((filter) => filter.Status !== showDeleted)
+                      .filter((filter) => filter.status !== showDeleted)
                       .map((child) => (
                           <Collapse
                               in={open}
                               timeout="auto"
                               unmountOnExit
-                              key={child.Ident + child.Name}
+                              key={child.ident + child.name}
                           >
                               <List
                                   component="div"
@@ -81,7 +98,7 @@ const TreeItem: FC<InputProps> = ({
                                       treeItem={child}
                                       select={select}
                                       selected={selected}
-                                      key={child.Ident * 3 + child.Name}
+                                      key={child.ident * 3 + child.name}
                                       showDeleted={showDeleted}
                                   />
                               </List>

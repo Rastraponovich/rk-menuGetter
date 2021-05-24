@@ -29,6 +29,7 @@ const RestaurantList: FC<InputProps> = ({ restaurants, select }) => {
                     />
                 ))}
             </Grid>
+            <div style={{ marginBottom: "1rem" }}></div>
         </>
     )
 }

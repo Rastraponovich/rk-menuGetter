@@ -51,7 +51,7 @@ const index = () => {
             <button onClick={getCategList2}>getCategList2</button>
             <span>{loading ? "Загрузка" : null}</span>
 
-            <TreeItems arr={tree} />
+            {/* <TreeItems arr={tree} /> */}
         </Layout>
     )
 }

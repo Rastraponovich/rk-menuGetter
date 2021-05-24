@@ -79,21 +79,32 @@ export const GetMenuItems = (mainParentIdent?: string) => {
         </RK7Query>`
     }
 }
+
+export const getMenuTreeByIdent = (ident: number) => {
+    return `<?xml version="1.0" encoding="windows-1251"?>
+    <RK7Query>
+        <RK7Command2 CMD="GetRefData" RefName="CATEGLIST" WithMacroProp="1" WithChildItems="3" PropMask="RIChildItems.*" RefItemIdent="${ident}">
+            
+        </RK7Command2>
+    </RK7Query>`
+}
+
 //OnlyActive="1"
-export const GetCategList = (rest?: string) => {
-    if (rest) {
+// PropMask="items.(), RIChildItems.(CategPath,Parent,Status,Name,Ident,PRICETYPES-3)
+export const GetCategList = (rest?: string, ident?: number) => {
+    if (rest.length > 0) {
         return `<?xml version="1.0" encoding="windows-1251"?>
         <RK7Query>
-            <RK7Command2 CMD="GetRefData" RefName="CATEGLIST" WithMacroProp="1"  WithChildItems="3" >
+            <RK7Command2 CMD="GetRefData" RefName="CATEGLIST" WithMacroProp="1"  WithChildItems="3">
                 <PROPFILTERS>
-                    <PROPFILTER Name="genRestName" Value=${rest}/>    
+                    <PROPFILTER Name="ItemIdent" Value="${ident}"/>    
                 </PROPFILTERS>
             </RK7Command2>
         </RK7Query>`
     } else {
         return `<?xml version="1.0" encoding="windows-1251"?>
         <RK7Query>
-            <RK7Command2 CMD="GetRefData" RefName="CATEGLIST"  WithMacroProp="1"  WithChildItems="3">
+            <RK7Command2 CMD="GetRefData" RefName="CATEGLIST"  WithMacroProp="1"  WithChildItems="3" PropMask="items.(Code,Name,PriceType-3, Ident,CategPath,Status)">
                
             </RK7Command2>
 

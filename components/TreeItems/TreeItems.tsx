@@ -1,29 +1,33 @@
-import { IParsingTreeResult } from "@/types/common"
+import {
+    IParceCategListItem,
+    IParsingTreeResult,
+    IRestaurant,
+} from "@/types/common"
 import { List } from "@material-ui/core"
 import React, { FC, memo } from "react"
 import TreeItem from "./TreeItem"
 interface InputProps {
-    arr: IParsingTreeResult[]
-    select?: (menuItem: IParsingTreeResult) => void
-    selected?: IParsingTreeResult
+    arr: IParceCategListItem[]
+    select?: (menuItem: IParceCategListItem) => void
+    selected?: IParceCategListItem
     showDeleted: boolean
 }
 
 const TreeItems: FC<InputProps> = ({ arr, select, selected, showDeleted }) => {
     console.info("render treeList")
 
-    const flter = showDeleted ? "" : "rsDeleted"
+    const flter = showDeleted ? "" : "Удален"
 
     return (
         <List dense>
             {arr
-                .filter((filter) => filter.Status !== flter)
+                .filter((filter) => filter.status !== flter)
                 .map((item) => (
                     <TreeItem
-                        key={item.Ident + item.Name}
+                        key={item.ident + item.name}
                         treeItem={item}
                         select={select}
-                        selected={selected.Ident}
+                        selected={selected.ident}
                         showDeleted={flter}
                     />
                 ))}
